@@ -1,13 +1,22 @@
-from ingestion.text_extractor import extract_text_from_pdf
-
+import camelot
 
 PDF_PATH = "data/raw/IS456.pdf"
+PDF_PAGE = "33"
 
+for flavor in ["lattice", "stream"]:
+    print("\n" + "=" * 60)
+    print(f"CAMeLOT: {flavor.upper()}")
+    print("=" * 60)
 
-pages = extract_text_from_pdf(PDF_PATH)
+    tables = camelot.read_pdf(
+        PDF_PATH,
+        pages=PDF_PAGE,
+        flavor=flavor
+    )
 
-for page in pages[:3]:
-    print("\n" + "=" * 80)
-    print("PAGE:", page["page_number"])
-    print("=" * 80)
-    print(page["text"])
+    print("Tables found:", tables.n)
+
+    for i, table in enumerate(tables, start=1):
+        print(f"\n--- TABLE {i} ---")
+        print("Parsing report:", table.parsing_report)
+        print(table.df.to_string(index=False, header=False))

@@ -1,19 +1,21 @@
 import pdfplumber
 
 
+MIN_TEXT_LENGTH = 50
+
+
 def detect_page_type(page):
     """
-    Determine whether a PDF page contains
-    meaningful selectable text.
+    Classify a PDF page based on the amount of selectable text.
 
     Returns:
-        "text"     -> selectable text exists
-        "scanned"  -> little or no selectable text
+        "text"    -> page contains meaningful selectable text
+        "scanned" -> page contains little or no selectable text
     """
 
     text = page.extract_text() or ""
 
-    if len(text.strip()) >= 50:
+    if len(text.strip()) >= MIN_TEXT_LENGTH:
         return "text"
 
     return "scanned"
@@ -21,8 +23,7 @@ def detect_page_type(page):
 
 def detect_pdf_pages(pdf_path):
     """
-    Classify every page in a PDF as either
-    text-based or scanned.
+    Detect the type of every page in a PDF.
     """
 
     pages = []
