@@ -216,3 +216,10 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+# IS 456 RAG project
+data/raw/*
+data/processed/*
+chroma_db/
+
+# Local project files
+.vscode/
